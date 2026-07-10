@@ -14,7 +14,7 @@ const userRolePermissionRoutes =
     require("./modules/user-role-permission/userRolePermission.routes");
 
 const machineRoutes = require("./modules/machine-master/machine.routes");
-
+const shiftRoutes = require("./modules/shift-calendar/shift.routes");
 app.use(cors());
 app.use(helmet());
 app.use(express.json());
@@ -36,6 +36,10 @@ app.use(
 app.use(
     "/api/machine-master",
     machineRoutes
+);
+app.use(
+    "/api/shift-calendar",
+    shiftRoutes
 );
 console.log(process.env.JWT_SECRET);
 

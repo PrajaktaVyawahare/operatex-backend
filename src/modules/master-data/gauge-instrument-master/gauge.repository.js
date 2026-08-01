@@ -30,6 +30,35 @@ async function getConfigById(id) {
     return result.rows[0];
 
 }
+// ==========================================================
+// CONFIG - PARAMETER
+// ==========================================================
+
+async function getParameters() {
+
+    const result =
+        await db.query(
+            query.GET_PARAMETERS
+        );
+
+    return result.rows;
+
+}
+
+// ==========================================================
+// CONFIG - CALIBRATION
+// ==========================================================
+
+async function getCalibrations() {
+
+    const result =
+        await db.query(
+            query.GET_CALIBRATIONS
+        );
+
+    return result.rows;
+
+}
 
 // ==========================================================
 // CREATE CONFIG
@@ -763,6 +792,9 @@ module.exports = {
     updateConfig,
 
     deleteConfig,
+    getParameters,
+
+getCalibrations,
 
     // Master
 

@@ -69,6 +69,43 @@ module.exports = {
 
         WHERE tm.tool_id = $1;
     `,
+    // ==========================================================
+// CONFIG - TOOL LIFE
+// ==========================================================
+
+GET_TOOL_LIFE: `
+    SELECT
+        config_id,
+        tool_id,
+        life_source,
+        warning_percent,
+        critical_percent,
+        auto_lock,
+        status,
+        created_at,
+        updated_at
+    FROM tool_life_config
+    ORDER BY config_id;
+`,
+
+// ==========================================================
+// CONFIG - TOOL CALIBRATION
+// ==========================================================
+
+GET_TOOL_CALIBRATION: `
+    SELECT
+        calibration_id,
+        tool_id,
+        calibration_type,
+        calibration_interval,
+        next_calibration,
+        calibration_by,
+        status,
+        created_at,
+        updated_at
+    FROM tool_calibration_config
+    ORDER BY calibration_id;
+`,
 
     // ==========================================================
     // MASTER

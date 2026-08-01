@@ -81,41 +81,36 @@ async function getShopById(id) {
 }
 
 async function updateMaster(id, payload, user) {
-    if (payload.type === "PLANT") {
-        const result = await db.query(
-            query.UPDATE_PLANT,
-            [
-                id,
-                payload.plant_code,
-                payload.plant_name,
-                payload.plant_type,
-                payload.timezone,
-                payload.state,
-                payload.city,
-                payload.address,
-                payload.status,
-                payload.remarks,
-                user.user_id
-            ]
-        );
+      console.log("ID =", id);
+    console.log("USER =", user.user_id);
+    console.log("PAYLOAD =", payload);
+    
+  if (payload.type === "SHOP") {
 
-        return result.rows[0];
-    }
+    await db.query(query.UPDATE_PLANT, [
+        payload.plant_id,
+        payload.plant_code,
+        payload.plant_name,
+        payload.plant_type,
+        payload.timezone,
+        payload.state,
+        payload.city,
+        payload.address,
+        payload.status,
+        null,
+        user.user_id
+    ]);
 
-    if (payload.type === "SHOP") {
-        const result = await db.query(
-            query.UPDATE_SHOP,
-            [
-                id,
-                payload.shop_code,
-                payload.shop_name,
-                payload.status,
-                user.user_id
-            ]
-        );
+    const result = await db.query(query.UPDATE_SHOP, [
+        id,
+        payload.shop_code,
+        payload.shop_name,
+        payload.status,
+        user.user_id
+    ]);
 
-        return result.rows[0];
-    }
+    return result.rows[0];
+}
 
     throw new Error("Invalid master type");
 }

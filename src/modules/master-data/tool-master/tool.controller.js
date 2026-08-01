@@ -32,7 +32,63 @@ async function getConfig(req, res, next) {
     }
 
 }
+// ==========================================================
+// CONFIG - TOOL LIFE
+// ==========================================================
 
+async function getToolLife(req, res, next) {
+
+    try {
+
+        const result =
+            await service.getToolLife();
+
+        res.json({
+
+            success: true,
+
+            message: "Tool life configuration fetched successfully.",
+
+            data: result
+
+        });
+
+    } catch (err) {
+
+        next(err);
+
+    }
+
+}
+
+// ==========================================================
+// CONFIG - TOOL CALIBRATION
+// ==========================================================
+
+async function getToolCalibration(req, res, next) {
+
+    try {
+
+        const result =
+            await service.getToolCalibration();
+
+        res.json({
+
+            success: true,
+
+            message: "Tool calibration configuration fetched successfully.",
+
+            data: result
+
+        });
+
+    } catch (err) {
+
+        next(err);
+
+    }
+
+}
 async function getConfigById(req, res, next) {
 
     try {
@@ -580,6 +636,9 @@ module.exports = {
     updateConfig,
 
     deleteConfig,
+    getToolLife,
+
+getToolCalibration,
 
     // Master
 

@@ -34,90 +34,72 @@ async function getConfigById(id) {
 
 async function createConfig(payload) {
 
+    console.log("Config Type:", payload.config_type);
+
     switch (payload.config_type.toUpperCase()) {
 
         case "BREAK": {
 
+            console.log("Before BREAK");
+
             const result = await db.query(
-
                 query.INSERT_BREAK,
-
                 [
-
                     payload.shift_id,
-
                     payload.break_name,
-
                     payload.break_start_time,
-
                     payload.break_end_time,
-
                     payload.include_in_oee,
-
                     payload.status || "ACTIVE"
-
                 ]
-
             );
 
-            return result.rows[0];
+            console.log("After BREAK");
 
+            return result.rows[0];
         }
 
         case "CALENDAR": {
 
+            console.log("Before Calendar");
+
             const result = await db.query(
-
                 query.INSERT_CALENDAR,
-
                 [
-
                     payload.shift_id,
-
                     payload.work_date,
-
                     payload.shift_status,
-
                     payload.remarks
-
                 ]
-
             );
 
-            return result.rows[0];
+            console.log("After Calendar");
 
+            return result.rows[0];
         }
 
         case "HOLIDAY": {
 
+            console.log("Before Holiday");
+
             const result = await db.query(
-
                 query.INSERT_HOLIDAY,
-
                 [
-
                     payload.plant_id,
-
                     payload.holiday_date,
-
                     payload.reason,
-
                     payload.is_paid
-
                 ]
-
             );
 
-            return result.rows[0];
+            console.log("After Holiday");
 
+            return result.rows[0];
         }
 
         default:
-
             throw new Error("Invalid config type");
-
     }
-
 }
 
 // ==========================================================

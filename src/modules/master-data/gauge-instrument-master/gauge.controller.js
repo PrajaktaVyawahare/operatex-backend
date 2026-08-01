@@ -197,6 +197,63 @@ async function deleteConfig(req, res, next) {
 
 }
 // ==========================================================
+// CONFIG - PARAMETER
+// ==========================================================
+
+async function getParameters(req, res, next) {
+
+    try {
+
+        const result =
+            await service.getParameters();
+
+        res.json({
+
+            success: true,
+
+            message: "Gauge parameters fetched successfully.",
+
+            data: result
+
+        });
+
+    } catch (err) {
+
+        next(err);
+
+    }
+
+}
+
+// ==========================================================
+// CONFIG - CALIBRATION
+// ==========================================================
+
+async function getCalibrations(req, res, next) {
+
+    try {
+
+        const result =
+            await service.getCalibrations();
+
+        res.json({
+
+            success: true,
+
+            message: "Gauge calibration schedule fetched successfully.",
+
+            data: result
+
+        });
+
+    } catch (err) {
+
+        next(err);
+
+    }
+
+}
+// ==========================================================
 // MASTER
 // ==========================================================
 
@@ -583,6 +640,9 @@ module.exports = {
     updateConfig,
 
     deleteConfig,
+    getParameters,
+
+getCalibrations,
 
     // ======================================================
     // MASTER

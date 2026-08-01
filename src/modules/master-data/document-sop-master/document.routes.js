@@ -31,6 +31,29 @@ router.get(
     checkPermission("document:view"),
     controller.getConfig
 );
+/*
+========================================
+GET /config/revision
+========================================
+*/
+router.get(
+    "/config/revision",
+    verifyJWT,
+    checkPermission("document:view"),
+    controller.getRevisions
+);
+
+/*
+========================================
+GET /config/access
+========================================
+*/
+router.get(
+    "/config/access",
+    verifyJWT,
+    checkPermission("document:view"),
+    controller.getAccess
+);
 
 /*
 ==================================================

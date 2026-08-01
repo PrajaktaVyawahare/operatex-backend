@@ -101,6 +101,44 @@ module.exports = {
             dm.document_id = $1;
 
     `,
+    // ==========================================================
+// CONFIG - REVISION
+// ==========================================================
+
+GET_REVISIONS: `
+    SELECT
+        revision_id,
+        document_id,
+        revision_no,
+        effective_from,
+        effective_to,
+        change_description,
+        approved_by,
+        status,
+        created_at,
+        updated_at
+    FROM document_revision
+    ORDER BY revision_no;
+`,
+
+// ==========================================================
+// CONFIG - ACCESS
+// ==========================================================
+
+GET_ACCESS: `
+    SELECT
+        access_id,
+        document_id,
+        role_name,
+        can_view,
+        can_download,
+        can_print,
+        status,
+        created_at,
+        updated_at
+    FROM document_access_config
+    ORDER BY role_name;
+`,
 
     // ==========================================================
     // MASTER

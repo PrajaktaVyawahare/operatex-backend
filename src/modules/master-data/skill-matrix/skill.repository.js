@@ -206,7 +206,35 @@ async function updateConfig(table, id, payload) {
     return result.rows[0];
 
 }
+// ==========================================================
+// CONFIG - SKILL LEVEL
+// ==========================================================
 
+async function getLevels() {
+
+    const result =
+        await db.query(
+            query.GET_LEVELS
+        );
+
+    return result.rows;
+
+}
+
+// ==========================================================
+// CONFIG - VALIDATION
+// ==========================================================
+
+async function getValidations() {
+
+    const result =
+        await db.query(
+            query.GET_VALIDATIONS
+        );
+
+    return result.rows;
+
+}
 // ==========================================================
 // DELETE CONFIG
 // ==========================================================
@@ -834,6 +862,9 @@ module.exports = {
     updateConfig,
 
     deleteConfig,
+    getLevels,
+
+getValidations,
 
     // ======================================================
     // MASTER

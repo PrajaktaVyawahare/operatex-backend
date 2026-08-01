@@ -39,8 +39,15 @@ const signalRoutes =
     require("./modules/master-data/signal-mapping/signal.routes");    
 
 const deviceRoutes =
-    require("./modules/master-data/device-master/device.routes");  
-app.use(cors());
+    require("./modules/master-data/device-master/device.routes");
+    const moduleEnablementRoutes =
+require("./modules/enterprise-setup/module-enablement/module.routes");  
+// app.use(cors());
+
+app.use(cors({
+  origin: "*",
+}));
+
 app.use(helmet());
 app.use(express.json());
 
@@ -103,7 +110,29 @@ app.use(
     deviceRoutes
 );
 
+app.use(
+    "/api/module-enablement",
+    moduleEnablementRoutes
+);
+
 
 console.log(process.env.JWT_SECRET);
+// ==========================================
+// GLOBAL ERROR HANDLER
+// ==========================================
+
+app.use((err, req, res, next) => {
+
+    console.error(err);
+
+    res.status(400).json({
+
+        success: false,
+
+        message: err.message || "Internal Server Error"
+
+    });
+
+});
 
 module.exports = app;

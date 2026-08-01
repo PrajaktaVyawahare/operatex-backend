@@ -112,7 +112,25 @@ async function createMaster(payload, user) {
     return tool;
 
 }
+// ==========================================================
+// CONFIG - TOOL LIFE
+// ==========================================================
 
+async function getToolLife() {
+
+    return repo.getToolLife();
+
+}
+
+// ==========================================================
+// CONFIG - TOOL CALIBRATION
+// ==========================================================
+
+async function getToolCalibration() {
+
+    return repo.getToolCalibration();
+
+}
 // ==========================================================
 // GET MASTER
 // ==========================================================
@@ -778,6 +796,9 @@ module.exports = {
     updateConfig,
 
     deleteConfig,
+    getToolLife,
+
+getToolCalibration,
 
     // Runtime
 

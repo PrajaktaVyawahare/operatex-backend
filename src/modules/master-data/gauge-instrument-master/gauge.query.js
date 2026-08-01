@@ -91,6 +91,45 @@ module.exports = {
     `,
 
     // ==========================================================
+// CONFIG - PARAMETER
+// ==========================================================
+
+GET_PARAMETERS: `
+    SELECT
+        parameter_id,
+        gauge_id,
+        parameter_name,
+        lsl,
+        usl,
+        unit,
+        status,
+        created_at,
+        updated_at
+    FROM gauge_parameter_config
+    ORDER BY parameter_name;
+`,
+
+// ==========================================================
+// CONFIG - CALIBRATION
+// ==========================================================
+
+GET_CALIBRATIONS: `
+    SELECT
+        schedule_id,
+        asset_id,
+        asset_type,
+        due_date,
+        frequency_days,
+        calibration_by,
+        status,
+        created_at,
+        updated_at
+    FROM calibration_schedule
+    WHERE asset_type = 'GAUGE'
+    ORDER BY due_date;
+`,
+
+    // ==========================================================
     // MASTER
     // ==========================================================
 

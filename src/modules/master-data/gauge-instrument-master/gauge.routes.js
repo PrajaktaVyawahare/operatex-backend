@@ -32,6 +32,24 @@ router.get(
     controller.getConfig
 );
 
+router.get(
+    "/config/parameter",
+    verifyJWT,
+    checkPermission("gauge:view"),
+    controller.getParameters
+);
+
+/*
+========================================
+GET /config/calibration
+========================================
+*/
+router.get(
+    "/config/calibration",
+    verifyJWT,
+    checkPermission("gauge:view"),
+    controller.getCalibrations
+);
 /*
 ==================================================
 API0118A
@@ -169,6 +187,9 @@ router.get(
     checkPermission("gauge:view"),
     controller.getRuntime
 );
+/*
+========================================
+GET /config/parameter
 
 /*
 ==================================================

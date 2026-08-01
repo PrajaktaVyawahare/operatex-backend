@@ -117,6 +117,24 @@ async function createMaster(payload, user) {
 
     return gauge;
 
+} // ==========================================================
+// CONFIG - PARAMETER
+// ==========================================================
+
+async function getParameters() {
+
+    return repo.getParameters();
+
+}
+
+// ==========================================================
+// CONFIG - CALIBRATION
+// ==========================================================
+
+async function getCalibrations() {
+
+    return repo.getCalibrations();
+
 }
 
 // ==========================================================
@@ -806,6 +824,9 @@ module.exports = {
     updateConfig,
 
     deleteConfig,
+    getParameters,
+
+getCalibrations,
 
     // ======================================================
     // RUNTIME

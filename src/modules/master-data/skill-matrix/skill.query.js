@@ -99,6 +99,43 @@ module.exports = {
         WHERE
             sm.skill_id = $1;
     `,
+    // ==========================================================
+// CONFIG - SKILL LEVEL
+// ==========================================================
+
+GET_LEVELS: `
+    SELECT
+        level_id,
+        skill_id,
+        skill_level,
+        minimum_score,
+        maximum_score,
+        remarks,
+        status,
+        created_at,
+        updated_at
+    FROM skill_level_config
+    ORDER BY minimum_score;
+`,
+
+// ==========================================================
+// CONFIG - VALIDATION
+// ==========================================================
+
+GET_VALIDATIONS: `
+    SELECT
+        validation_id,
+        skill_id,
+        user_id,
+        validated_by,
+        validation_result,
+        score,
+        remarks,
+        event_ts,
+        created_at
+    FROM skill_validation_event
+    ORDER BY event_ts DESC;
+`,
 
     // ==========================================================
     // MASTER

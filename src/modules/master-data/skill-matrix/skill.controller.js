@@ -32,6 +32,63 @@ async function getConfig(req, res, next) {
     }
 
 }
+// ==========================================================
+// CONFIG - SKILL LEVEL
+// ==========================================================
+
+async function getLevels(req, res, next) {
+
+    try {
+
+        const result =
+            await service.getLevels();
+
+        res.json({
+
+            success: true,
+
+            message: "Skill levels fetched successfully.",
+
+            data: result
+
+        });
+
+    } catch (err) {
+
+        next(err);
+
+    }
+
+}
+
+// ==========================================================
+// CONFIG - VALIDATION
+// ==========================================================
+
+async function getValidations(req, res, next) {
+
+    try {
+
+        const result =
+            await service.getValidations();
+
+        res.json({
+
+            success: true,
+
+            message: "Skill validation events fetched successfully.",
+
+            data: result
+
+        });
+
+    } catch (err) {
+
+        next(err);
+
+    }
+
+}
 
 async function getConfigById(req, res, next) {
 
@@ -583,7 +640,9 @@ module.exports = {
     updateConfig,
 
     deleteConfig,
+getLevels,
 
+getValidations,
     // ======================================================
     // MASTER
     // ======================================================

@@ -4,5 +4,6 @@ const router = express.Router();
 const controller = require("./auth.controller");
 console.log(controller);
 router.post("/login", controller.login);
+router.post("/logout", controller.logout);
 
 module.exports = router;

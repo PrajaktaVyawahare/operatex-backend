@@ -1,6 +1,24 @@
 const repo = require("./userRolePermission.repository");
 const auditRepo = require("../../audit/audit.repository");
 const configRepo = require("../../config/config.repository");
+// ==========================================================
+// MODULE LICENSE CHECK
+// ==========================================================
+
+async function checkModule() {
+
+    await configRepo.getTenantConfig();
+
+    const license =
+        await configRepo.getModuleLicense(
+            "user_role_permission"
+        );
+
+    if (!license || Number(license.is_enabled) !== 1) {
+        throw new Error("Module disabled");
+    }
+
+}
 
 // ==========================================================
 // CREATE USER / ROLE / PERMISSION
@@ -49,18 +67,7 @@ async function createMaster(payload, user) {
             throw new Error("Invalid master type");
     }
 
-    await auditRepo.create({
-        action: "CREATE",
-        module: "user_role_permission",
-        user_id: user.user_id,
-        entity_id:
-            result.user_id ||
-            result.role_id ||
-            result.permission_id ||
-            result.mapping_id ||
-            result.map_id,
-        payload
-    });
+   
 
     return result;
 }
@@ -70,6 +77,7 @@ async function createMaster(payload, user) {
 // ==========================================================
 
 async function getConfig() {
+     await checkModule();
     return repo.getConfig();
 }
 
@@ -78,6 +86,7 @@ async function getConfig() {
 // ==========================================================
 
 async function getMaster(type) {
+     await checkModule();
 
     switch (type) {
 
@@ -107,6 +116,7 @@ async function getMaster(type) {
 // ==========================================================
 
 async function updateMaster(id, payload, user) {
+     await checkModule();
 
     let result;
 
@@ -136,13 +146,7 @@ async function updateMaster(id, payload, user) {
             throw new Error("Invalid master type");
     }
 
-    await auditRepo.create({
-        action: "UPDATE",
-        module: "user_role_permission",
-        user_id: user.user_id,
-        entity_id: id,
-        payload
-    });
+  
 
     return result;
 }
@@ -152,6 +156,7 @@ async function updateMaster(id, payload, user) {
 // ==========================================================
 
 async function getRuntime() {
+     await checkModule();
 
     return repo.getLoginLogs();
 
@@ -162,6 +167,7 @@ async function getRuntime() {
 // ==========================================================
 
 async function executeAction(payload, user) {
+     await checkModule();
 
     await auditRepo.create({
 
@@ -190,6 +196,7 @@ async function executeAction(payload, user) {
 // ==========================================================
 
 async function getReport() {
+     await checkModule();
 
     return repo.getReport();
 
@@ -200,6 +207,7 @@ async function getReport() {
 // ==========================================================
 
 async function exportData() {
+     await checkModule();
 
     return repo.getReport();
 

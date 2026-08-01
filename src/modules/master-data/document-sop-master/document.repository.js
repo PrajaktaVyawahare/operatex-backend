@@ -30,6 +30,35 @@ async function getConfigById(id) {
     return result.rows[0];
 
 }
+// ==========================================================
+// CONFIG - REVISION
+// ==========================================================
+
+async function getRevisions() {
+
+    const result =
+        await db.query(
+            query.GET_REVISIONS
+        );
+
+    return result.rows;
+
+}
+
+// ==========================================================
+// CONFIG - ACCESS
+// ==========================================================
+
+async function getAccess() {
+
+    const result =
+        await db.query(
+            query.GET_ACCESS
+        );
+
+    return result.rows;
+
+}
 
 // ==========================================================
 // CREATE CONFIG
@@ -726,6 +755,9 @@ module.exports = {
     updateConfig,
 
     deleteConfig,
+    getRevisions,
+
+getAccess,
 
     // ======================================================
     // MASTER

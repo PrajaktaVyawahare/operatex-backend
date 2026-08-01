@@ -3,7 +3,20 @@
 const repo = require("./shift.repository");
 const auditRepo = require("../../audit/audit.repository");
 const configRepo = require("../../config/config.repository");
+async function checkModule() {
 
+    const license =
+        await configRepo.getModuleLicense(
+            "shift_master"
+        );
+
+    if (!license || Number(license.is_enabled) !== 1) {
+
+        throw new Error("Module disabled");
+
+    }
+
+}
 // ==========================================================
 // CREATE MASTER
 // ==========================================================
@@ -84,19 +97,7 @@ async function createMaster(payload, user) {
 
     // STEP 8 : Audit
 
-    await auditRepo.create({
-
-        action: "CREATE",
-
-        module: "shift_master",
-
-        user_id: user.user_id,
-
-        entity_id: shift.shift_id,
-
-        payload
-
-    });
+  
 
     return shift;
 
@@ -107,6 +108,7 @@ async function createMaster(payload, user) {
 // ==========================================================
 
 async function getMaster() {
+      await checkModule();
 
     return repo.getMaster();
 
@@ -117,6 +119,7 @@ async function getMaster() {
 // ==========================================================
 
 async function getMasterById(id) {
+      await checkModule();
 
     const shift =
         await repo.getMasterById(id);
@@ -137,6 +140,7 @@ async function getMasterById(id) {
 // ==========================================================
 
 async function updateMaster(id, payload, user) {
+      await checkModule();
 
     // STEP 1 : Check Existing Shift
 
@@ -225,20 +229,7 @@ async function updateMaster(id, payload, user) {
 
     // STEP 7 : Audit Log
 
-    await auditRepo.create({
-
-        action: "UPDATE",
-
-        module: "shift_master",
-
-        user_id: user.user_id,
-
-        entity_id: id,
-
-        payload
-
-    });
-
+   
     return updated;
 
 }
@@ -248,6 +239,7 @@ async function updateMaster(id, payload, user) {
 // ==========================================================
 
 async function deleteMaster(id, user) {
+    await checkModule();
 
     // STEP 1 : Existing Record
 
@@ -279,19 +271,7 @@ async function deleteMaster(id, user) {
 
     // STEP 4 : Audit
 
-    await auditRepo.create({
-
-        action: "DELETE",
-
-        module: "shift_master",
-
-        user_id: user.user_id,
-
-        entity_id: id,
-
-        payload: existing
-
-    });
+  
 
     return deleted;
 
@@ -301,6 +281,7 @@ async function deleteMaster(id, user) {
 // ==========================================================
 
 async function getConfig() {
+     await checkModule();
 
     return await repo.getConfig();
 
@@ -311,6 +292,7 @@ async function getConfig() {
 // ==========================================================
 
 async function getConfigById(id) {
+     await checkModule();
 
     const config =
         await repo.getConfigById(id);
@@ -330,70 +312,48 @@ async function getConfigById(id) {
 // ==========================================================
 // CREATE CONFIG
 // ==========================================================
-
 async function createConfig(payload, user) {
 
-    // STEP 1 : Tenant Configuration
+    console.log("1");
+
+    await checkModule();
+
+    console.log("2");
 
     await configRepo.getTenantConfig();
 
-    // STEP 2 : Module License
+    console.log("3");
 
-    const license =
-        await configRepo.getModuleLicense(
-            "shift_master"
-        );
+    const license = await configRepo.getModuleLicense("shift_master");
 
     if (!license || Number(license.is_enabled) !== 1) {
-
-        throw new Error(
-            "Module disabled"
-        );
-
+        throw new Error("Module disabled");
     }
 
-    // STEP 3 : Shift Validation
+    console.log("4");
 
-    const shift =
-        await repo.getMasterById(
-            payload.shift_id
-        );
+    // Validate shift only for BREAK and CALENDAR
+    if (
+        payload.config_type.toUpperCase() === "BREAK" ||
+        payload.config_type.toUpperCase() === "CALENDAR"
+    ) {
 
-    if (!shift) {
+        const shift = await repo.getMasterById(payload.shift_id);
 
-        throw new Error(
-            "Invalid Shift"
-        );
+        console.log("5", shift);
 
+        if (!shift) {
+            throw new Error("Invalid Shift");
+        }
     }
 
-    // STEP 4 : Save Configuration
+    // Save Configuration
+    const config = await repo.createConfig(payload);
 
-    const config =
-        await repo.createConfig(
-            payload
-        );
-
-    // STEP 5 : Audit Log
-
-    await auditRepo.create({
-
-        action: "CONFIG_CREATE",
-
-        module: "shift_calendar",
-
-        user_id: user.user_id,
-
-        entity_id: shift.shift_id,
-
-        payload
-
-    });
+    console.log("6", config);
 
     return config;
-
 }
-
 // ==========================================================
 // UPDATE CONFIG
 // ==========================================================
@@ -404,7 +364,7 @@ async function updateConfig(
     payload,
     user
 ) {
-
+ await checkModule();
     const updated =
         await repo.updateConfig(
             table,
@@ -420,19 +380,6 @@ async function updateConfig(
 
     }
 
-    await auditRepo.create({
-
-        action: "CONFIG_UPDATE",
-
-        module: "shift_calendar",
-
-        user_id: user.user_id,
-
-        entity_id: id,
-
-        payload
-
-    });
 
     return updated;
 
@@ -447,6 +394,7 @@ async function deleteConfig(
     id,
     user
 ) {
+     await checkModule();
 
     const deleted =
         await repo.deleteConfig(
@@ -462,19 +410,7 @@ async function deleteConfig(
 
     }
 
-    await auditRepo.create({
-
-        action: "CONFIG_DELETE",
-
-        module: "shift_calendar",
-
-        user_id: user.user_id,
-
-        entity_id: id,
-
-        payload: deleted
-
-    });
+   
 
     return deleted;
 
@@ -484,6 +420,7 @@ async function deleteConfig(
 // ==========================================================
 
 async function getRuntime(filters) {
+     await checkModule();
 
     return await repo.getRuntime(filters);
 
@@ -589,6 +526,7 @@ if (!runtimeData) {
 // ==========================================================
 
 async function getReport(filters) {
+     await checkModule();
 
     return await repo.getReport(filters);
 
@@ -599,6 +537,7 @@ async function getReport(filters) {
 // ==========================================================
 
 async function exportData(filters) {
+     await checkModule();
 
     return await repo.exportData(filters);
 

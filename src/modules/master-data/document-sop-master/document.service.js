@@ -116,6 +116,25 @@ async function getMasterById(id) {
     return document;
 
 }
+// ==========================================================
+// CONFIG - REVISION
+// ==========================================================
+
+async function getRevisions() {
+
+    return repo.getRevisions();
+
+}
+
+// ==========================================================
+// CONFIG - ACCESS
+// ==========================================================
+
+async function getAccess() {
+
+    return repo.getAccess();
+
+}
 
 // ==========================================================
 // UPDATE MASTER
@@ -679,6 +698,9 @@ module.exports = {
     updateConfig,
 
     deleteConfig,
+    getRevisions,
+
+getAccess,
 
     // ======================================================
     // RUNTIME

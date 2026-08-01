@@ -32,7 +32,63 @@ async function getConfig(req, res, next) {
     }
 
 }
+// ==========================================================
+// CONFIG - REVISION
+// ==========================================================
 
+async function getRevisions(req, res, next) {
+
+    try {
+
+        const result =
+            await service.getRevisions();
+
+        res.json({
+
+            success: true,
+
+            message: "Document revisions fetched successfully.",
+
+            data: result
+
+        });
+
+    } catch (err) {
+
+        next(err);
+
+    }
+
+}
+
+// ==========================================================
+// CONFIG - ACCESS
+// ==========================================================
+
+async function getAccess(req, res, next) {
+
+    try {
+
+        const result =
+            await service.getAccess();
+
+        res.json({
+
+            success: true,
+
+            message: "Document access configuration fetched successfully.",
+
+            data: result
+
+        });
+
+    } catch (err) {
+
+        next(err);
+
+    }
+
+}
 async function getConfigById(req, res, next) {
 
     try {
@@ -582,6 +638,9 @@ module.exports = {
     updateConfig,
 
     deleteConfig,
+    getRevisions,
+
+getAccess,
 
     // ======================================================
     // MASTER

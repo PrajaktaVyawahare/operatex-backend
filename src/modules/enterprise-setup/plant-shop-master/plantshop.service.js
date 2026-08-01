@@ -2,25 +2,54 @@ const repo = require("./plantshop.repository");
 const auditRepo = require("../../audit/audit.repository");
 const configRepo = require("../../config/config.repository");
 
-async function getConfig() {
-    return repo.getConfig();
+// ==========================================================
+// MODULE LICENSE CHECK
+// ==========================================================
+
+async function checkModule() {
+
+    const license = await configRepo.getModuleLicense(
+        "plant_shop_master"
+    );
+
+    if (!license || Number(license.is_enabled) !== 1) {
+        throw new Error("Module disabled");
+    }
+
 }
 
+// ==========================================================
+// CONFIG
+// ==========================================================
+
+async function getConfig() {
+
+    await checkModule();
+
+    return repo.getConfig();
+
+}
+
+// ==========================================================
+// MASTER
+// ==========================================================
+
 async function getMaster() {
+
+    await checkModule();
+
     return repo.getMaster();
+
 }
 
 async function createMaster(payload, user) {
-    const tenantConfig =
-        await configRepo.getTenantConfig();
 
-    const license =
-        await configRepo.getModuleLicense(
-            "plant_shop_master"
-        );
+    await checkModule();
 
-   
+    await configRepo.getTenantConfig();
+
     if (payload.type === "SHOP") {
+
         const plant =
             await repo.getPlantById(
                 payload.plant_id
@@ -37,6 +66,7 @@ async function createMaster(payload, user) {
                 "Parent plant inactive"
             );
         }
+
     }
 
     const result =
@@ -46,16 +76,23 @@ async function createMaster(payload, user) {
         );
 
     await auditRepo.create({
+
         action: "CREATE",
+
         module: "plant_shop_master",
+
         user_id: user.user_id,
+
         entity_id:
             result.plant_id ||
             result.shop_id,
+
         payload
+
     });
 
     return result;
+
 }
 
 async function updateMaster(
@@ -63,28 +100,23 @@ async function updateMaster(
     payload,
     user
 ) {
-    const license =
-        await configRepo.getModuleLicense(
-            "plant_shop_master"
-        );
 
-    if (
-        !license ||
-        Number(license.is_enabled) !== 1
-    ) {
-        throw new Error("Module disabled");
-    }
+    await checkModule();
 
     let existing;
 
     if (payload.type === "PLANT") {
+
         existing =
             await repo.getPlantById(id);
+
     }
 
     if (payload.type === "SHOP") {
+
         existing =
             await repo.getShopById(id);
+
     }
 
     if (!existing) {
@@ -99,24 +131,42 @@ async function updateMaster(
         );
 
     await auditRepo.create({
+
         action: "UPDATE",
+
         module: "plant_shop_master",
+
         user_id: user.user_id,
+
         entity_id: id,
+
         payload
+
     });
 
     return result;
+
 }
 
+// ==========================================================
+// RUNTIME
+// ==========================================================
+
 async function getRuntime() {
+
+    await checkModule();
+
     return repo.getRuntime();
+
 }
 
 async function executeAction(
     payload,
     user
 ) {
+
+    await checkModule();
+
     const allowedActions = [
         "SYNC",
         "REBUILD_HIERARCHY",
@@ -135,34 +185,73 @@ async function executeAction(
     }
 
     await auditRepo.create({
+
         action: payload.action,
+
         module: "plant_shop_master",
+
         user_id: user.user_id,
+
         entity_id: null,
+
         payload
+
     });
 
     return {
+
         executed: true,
+
         action: payload.action
+
     };
+
 }
+
+// ==========================================================
+// REPORT
+// ==========================================================
 
 async function getReport() {
+
+    await checkModule();
+
     return repo.getReport();
+
 }
+
+// ==========================================================
+// EXPORT
+// ==========================================================
 
 async function exportData() {
+
+    await checkModule();
+
     return repo.getReport();
+
 }
 
+// ==========================================================
+// EXPORTS
+// ==========================================================
+
 module.exports = {
+
     getConfig,
+
     getMaster,
+
     createMaster,
+
     updateMaster,
+
     getRuntime,
+
     executeAction,
+
     getReport,
+
     exportData
+
 };

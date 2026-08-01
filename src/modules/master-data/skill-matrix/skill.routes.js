@@ -31,6 +31,29 @@ router.get(
     checkPermission("skill:view"),
     controller.getConfig
 );
+/*
+========================================
+GET /config/level
+========================================
+*/
+router.get(
+    "/config/level",
+    verifyJWT,
+    checkPermission("skill:view"),
+    controller.getLevels
+);
+
+/*
+========================================
+GET /config/validation
+========================================
+*/
+router.get(
+    "/config/validation",
+    verifyJWT,
+    checkPermission("skill:view"),
+    controller.getValidations
+);
 
 /*
 ==================================================

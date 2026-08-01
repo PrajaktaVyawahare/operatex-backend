@@ -2,7 +2,7 @@ const repo = require("./auth.repository");
 const jwt = require("jsonwebtoken");
 
 async function login(username, password, req) {
-
+console.log("Username:", username);
     const user = await repo.getUserByUsername(username);
 
     if (!user) {
@@ -12,6 +12,14 @@ async function login(username, password, req) {
     if (user.password !== password) {
         throw new Error("Invalid password");
     }
+    const activeSession =
+    await repo.getActiveSession(user.user_id);
+
+if (activeSession) {
+    throw new Error(
+        "User is already logged in on another system. Please logout first."
+    );
+}
 
     // Generate JWT first
     const token = jwt.sign(
@@ -43,14 +51,26 @@ async function login(username, password, req) {
 
     return {
 
-        token
+        token,
+           user: {
+        user_id: user.user_id,
+        username: user.username,
+        role_name: user.role_name
+    }
+        
 
     };
+
+}
+async function logout(sessionId) {
+
+    await repo.logout(sessionId);
 
 }
 
 module.exports = {
 
-    login
+    login,
+     logout
 
 };

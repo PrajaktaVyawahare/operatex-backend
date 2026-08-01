@@ -104,6 +104,35 @@ async function createConfig(payload) {
     }
 
 }
+// ==========================================================
+// CONFIG - TOOL LIFE
+// ==========================================================
+
+async function getToolLife() {
+
+    const result =
+        await db.query(
+            query.GET_TOOL_LIFE
+        );
+
+    return result.rows;
+
+}
+
+// ==========================================================
+// CONFIG - TOOL CALIBRATION
+// ==========================================================
+
+async function getToolCalibration() {
+
+    const result =
+        await db.query(
+            query.GET_TOOL_CALIBRATION
+        );
+
+    return result.rows;
+
+}
 
 // ==========================================================
 // UPDATE CONFIG
@@ -807,6 +836,9 @@ module.exports = {
     updateConfig,
 
     deleteConfig,
+    getToolLife,
+
+getToolCalibration,
 
     // Master
 

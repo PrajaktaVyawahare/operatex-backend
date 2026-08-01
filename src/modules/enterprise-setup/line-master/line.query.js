@@ -17,8 +17,8 @@ module.exports = {
             sm.station_name,
             sm.station_type,
             
-            sm.max_operator_count,
-            sm.is_bottleneck,
+            
+            
 
             lc.layout_id,
             lc.layout_name,

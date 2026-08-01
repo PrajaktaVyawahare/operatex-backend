@@ -351,6 +351,25 @@ async function getConfig() {
     return await repo.getConfig();
 
 }
+// ==========================================================
+// CONFIG - SKILL LEVEL
+// ==========================================================
+
+async function getLevels() {
+
+    return repo.getLevels();
+
+}
+
+// ==========================================================
+// CONFIG - VALIDATION
+// ==========================================================
+
+async function getValidations() {
+
+    return repo.getValidations();
+
+}
 
 // ==========================================================
 // GET CONFIG BY ID
@@ -810,6 +829,9 @@ module.exports = {
     updateConfig,
 
     deleteConfig,
+    getLevels,
+
+getValidations,
 
     // ======================================================
     // RUNTIME

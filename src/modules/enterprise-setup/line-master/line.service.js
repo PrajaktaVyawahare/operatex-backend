@@ -65,13 +65,7 @@ async function getMaster(user) {
     const result =
         await repo.getMaster();
 
-    await auditRepo.create({
-        action: "VIEW_MASTER",
-        module: "line_master",
-        user_id: user.user_id,
-        entity_id: null,
-        payload: {}
-    });
+  
 
     return result;
 }
@@ -101,13 +95,6 @@ async function createMaster(payload, user) {
     const result =
         await repo.createMaster(payload);
 
-    await auditRepo.create({
-        action: "CREATE",
-        module: "line_master",
-        user_id: user.user_id,
-        entity_id: result.line_id,
-        payload
-    });
 
     return result;
 }
@@ -131,13 +118,7 @@ async function updateMaster(id, payload, user) {
     const result =
         await repo.updateMaster(id, payload);
 
-    await auditRepo.create({
-        action: "UPDATE",
-        module: "line_master",
-        user_id: user.user_id,
-        entity_id: id,
-        payload
-    });
+   
 
     return result;
 }

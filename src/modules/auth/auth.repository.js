@@ -46,8 +46,39 @@ async function createLoginLog(data) {
         ]
     );
 }
+async function getActiveSession(userId) {
+
+    const result = await db.query(
+        `
+        SELECT *
+        FROM login_log
+        WHERE user_id = $1
+          AND logout_time IS NULL
+        ORDER BY login_time DESC
+        LIMIT 1
+        `,
+        [userId]
+    );
+
+    return result.rows[0];
+}
+async function logout(sessionId) {
+
+    await db.query(
+        `
+        UPDATE login_log
+        SET logout_time = NOW()
+        WHERE session_id = $1
+          AND logout_time IS NULL
+        `,
+        [sessionId]
+    );
+
+}
 
 module.exports = {
     getUserByUsername,
-    createLoginLog
+    createLoginLog,
+    getActiveSession,
+       logout
 };

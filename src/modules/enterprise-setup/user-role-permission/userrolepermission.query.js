@@ -173,6 +173,8 @@ module.exports = {
         INSERT INTO permission_master
         (
             permission_code,
+             
+
             module_name,
             action,
             description

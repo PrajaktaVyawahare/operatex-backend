@@ -137,6 +137,7 @@ const createPermission = async (data) => {
         query.INSERT_PERMISSION,
         [
             data.permission_code,
+            
             data.module_name,
             data.action,
             data.description

@@ -61,13 +61,15 @@ async function getConfigById(req, res, next) {
 }
 
 async function createConfig(req, res, next) {
+    console.log("Controller Start");
 
     try {
-
+console.log(req.body);
         const errors =
             validation.validateCreateConfig(
                 req.body
             );
+             console.log("Controller End");
 
         if (errors.length) {
 

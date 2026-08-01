@@ -18,7 +18,29 @@ const {
 // ==========================================================
 // CONFIG
 // ==========================================================
+/*
+========================================
+GET /config/life
+========================================
+*/
+router.get(
+    "/config/life",
+    verifyJWT,
+    checkPermission("tool:view"),
+    controller.getToolLife
+);
 
+/*
+========================================
+GET /config/calibration
+========================================
+*/
+router.get(
+    "/config/calibration",
+    verifyJWT,
+    checkPermission("tool:view"),
+    controller.getToolCalibration
+);
 /*
 ==================================================
 API0109
